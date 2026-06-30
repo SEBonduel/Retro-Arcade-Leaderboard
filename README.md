@@ -8,6 +8,7 @@ API de classements multi-jeux pour bornes d'arcade retro (Pac-Man, Tetris, Snake
 - **Base de donnees** : MySQL
 - **Monitoring** : Prometheus + Grafana
 - **Conteneurisation** : Docker + Docker Compose
+- **Tests** : Jest
 - **CI** : GitHub Actions
 - **Test de charge** : k6
 
