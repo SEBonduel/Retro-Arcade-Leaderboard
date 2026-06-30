@@ -1,0 +1,37 @@
+{
+    "uid": "redis-memory",
+    "title": "Redis Memory Used",
+    "timezone": "browser",
+    "schemaVersion": 39,
+    "version": 1,
+    "refresh": "10s",
+    "time": {
+        "from": "now-15m",
+        "to": "now"
+    },
+    "panels": [
+        {
+            "type": "timeseries",
+            "title": "Redis Memory Used (bytes)",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "bytes"
+                },
+                "overrides": []
+            },
+            "targets": [
+                {
+                    "refId": "A",
+                    "expr": "redis_memory_used_bytes"
+                }
+            ]
+        }
+    ]
+}

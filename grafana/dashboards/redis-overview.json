@@ -1,0 +1,94 @@
+{
+    "uid": "redis-overview",
+    "title": "Redis Overview",
+    "timezone": "browser",
+    "schemaVersion": 39,
+    "version": 1,
+    "refresh": "10s",
+    "time": {
+        "from": "now-15m",
+        "to": "now"
+    },
+    "panels": [
+        {
+            "type": "stat",
+            "title": "Redis Up",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 0,
+                "y": 0
+            },
+            "targets": [
+                {
+                    "refId": "A",
+                    "expr": "redis_up"
+                }
+            ]
+        },
+        {
+            "type": "stat",
+            "title": "Connected Clients",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 6,
+                "y": 0
+            },
+            "targets": [
+                {
+                    "refId": "A",
+                    "expr": "redis_connected_clients"
+                }
+            ]
+        },
+        {
+            "type": "stat",
+            "title": "Used Memory",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 12,
+                "y": 0
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "bytes"
+                },
+                "overrides": []
+            },
+            "targets": [
+                {
+                    "refId": "A",
+                    "expr": "redis_memory_used_bytes"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "Commands / s",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 9,
+                "w": 18,
+                "x": 0,
+                "y": 4
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "ops"
+                },
+                "overrides": []
+            },
+            "targets": [
+                {
+                    "refId": "A",
+                    "expr": "rate(redis_commands_processed_total[1m])"
+                }
+            ]
+        }
+    ]
+}
