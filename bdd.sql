@@ -8,3 +8,11 @@ CREATE TABLE IF NOT EXISTS scores (
     INDEX idx_player (player),
     INDEX idx_player_game_created (player, game, created_at)
 );
+
+INSERT INTO scores (player, game, score) VALUES
+('AAA', 'pacman', 500000),
+('BBB', 'pacman', 350000),
+('CCC', 'tetris', 8000000),
+('AAA', 'snake', 75000),
+('DDD', 'breakout', 200000),
+('BBB', 'donkeykong', 1000000);
