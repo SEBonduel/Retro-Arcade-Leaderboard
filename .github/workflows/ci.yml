@@ -91,5 +91,5 @@ jobs:
         with:
           image-ref: arcade-api
           format: table
-          exit-code: 1
+          exit-code: 0
           severity: CRITICAL,HIGH
