@@ -4,8 +4,8 @@ API de classements multi-jeux pour bornes d'arcade retro (Pac-Man, Tetris, Snake
 
 ## Stack technique
 
-- **API** : Python / FastAPI
-- **Base de donnees** : PostgreSQL
+- **API** : Node.js / Express
+- **Base de donnees** : MySQL
 - **Monitoring** : Prometheus + Grafana
 - **Conteneurisation** : Docker + Docker Compose
 - **CI** : GitHub Actions
@@ -33,8 +33,7 @@ Seul le fichier `docker-compose.yml` est utilise : l'image est construite avec l
 
 | Service    | URL                    |
 |------------|------------------------|
-| API        | http://localhost:8000  |
-| Swagger    | http://localhost:8000/docs |
+| API        | http://localhost:3001  |
 | Prometheus | http://localhost:9090  |
 | Grafana    | http://localhost:3000 (admin / admin) |
 
