@@ -1,11 +1,11 @@
 global:
-  scrape_interval: 1s
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+rule_files:
+  - alerts.yml
 
 scrape_configs:
-  - job_name: "redis"
+  - job_name: "arcade-api"
     static_configs:
-      - targets: ["redis-exporter:9121"]
-
-  - job_name: "prometheus"
-    static_configs:
-      - targets: ["prometheus:9090"]
+      - targets: ["app:3001"]
