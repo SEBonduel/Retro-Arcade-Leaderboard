@@ -46,6 +46,20 @@ services:
       timeout: 3s
       retries: 5
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: arcade-phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+
   prometheus:
     image: prom/prometheus:latest
     container_name: arcade-prometheus
