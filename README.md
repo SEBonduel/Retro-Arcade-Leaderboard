@@ -65,3 +65,13 @@ k6 run k6/load_test.js
 ```
 
 Le script monte progressivement en charge et sollicite les routes principales. L'impact est observable dans le dashboard Grafana.
+
+## Screenshots
+
+### Dashboard Grafana sous charge (k6)
+
+![Dashboard Grafana](screenshots/grafana-dashboard.png)
+
+### Alerte Prometheus declenchee (CheatSpike)
+
+![Alerte Prometheus](screenshots/prometheus-alert.png)
