@@ -4,7 +4,7 @@ FROM node:20-alpine AS build
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Stage 2 : image finale legere
 FROM node:20-alpine AS production
