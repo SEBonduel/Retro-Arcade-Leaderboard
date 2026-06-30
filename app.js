@@ -1,9 +1,47 @@
 const express = require('express');
 const mysql = require('mysql2');
+const client = require('prom-client');
 const app = express();
 require('dotenv').config();
 
 const port = process.env.PORT || 3001;
+
+// Metriques Prometheus
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
+
+const httpRequestDuration = new client.Histogram({
+    name: 'http_request_duration_seconds',
+    help: 'Latence des requetes HTTP',
+    labelNames: ['method', 'endpoint', 'status_code'],
+    buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5],
+    registers: [register],
+});
+
+const scoresSubmitted = new client.Counter({
+    name: 'scores_submitted_total',
+    help: 'Nombre de scores soumis avec succes',
+    labelNames: ['game'],
+    registers: [register],
+});
+
+const scoresRejected = new client.Counter({
+    name: 'scores_rejected_total',
+    help: 'Nombre de scores rejetes',
+    labelNames: ['game', 'reason'],
+    registers: [register],
+});
+
+const leaderboardViews = new client.Counter({
+    name: 'leaderboard_views_total',
+    help: 'Nombre de consultations de classement',
+    labelNames: ['game'],
+    registers: [register],
+});
+
+function incrementRejectedMetric(reason, game) {
+    scoresRejected.labels(game || 'unknown', reason).inc();
+}
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -20,8 +58,24 @@ const promise = db.promise();
 
 app.use(express.json());
 
+// Middleware pour mesurer la latence de chaque requete
+app.use((req, res, next) => {
+    const end = httpRequestDuration.startTimer();
+    res.on('finish', () => {
+        if (req.path !== '/metrics') {
+            end({ method: req.method, endpoint: req.path, status_code: res.statusCode });
+        }
+    });
+    next();
+});
+
 app.get('/health', (req, res) => {
     res.status(200).json({ "status": "ok" });
+});
+
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
 });
 
 app.get('/games', async (req, res) => {
@@ -57,6 +111,7 @@ app.get('/leaderboard/:game', async (req, res) => {
         `;
         const [leaderboard] = await promise.query(query, [gameId, limit]);
 
+        leaderboardViews.labels(gameName).inc();
         res.status(200).json(leaderboard);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -93,7 +148,7 @@ app.post('/scores', async (req, res) => {
     try {
         const [gameResult] = await promise.query('SELECT id, max_score FROM games WHERE name = ?', [game]);
         if (gameResult.length === 0) {
-            incrementRejectedMetric('unknown_game');
+            incrementRejectedMetric('unknown_game', game);
             return res.status(400).json({ error: "Game does not exist" });
         }
 
@@ -101,12 +156,12 @@ app.post('/scores', async (req, res) => {
         const maxAllowedScore = gameResult[0].max_score;
 
         if (score < 0) {
-            incrementRejectedMetric('negative_score');
+            incrementRejectedMetric('negative_score', game);
             return res.status(400).json({ error: "Score cannot be negative" });
         }
 
         if (score > maxAllowedScore) {
-            incrementRejectedMetric('score_above_max');
+            incrementRejectedMetric('score_above_max', game);
             return res.status(422).json({ error: "Score exceeds maximum allowed for this game" });
         }
 
@@ -119,7 +174,7 @@ app.post('/scores', async (req, res) => {
         );
 
         if (cooldownResult.length > 0) {
-            incrementRejectedMetric('cooldown_active');
+            incrementRejectedMetric('cooldown_active', game);
             return res.status(429).json({ error: "Too many requests. Cooldown of 2 seconds active." });
         }
 
@@ -135,6 +190,7 @@ app.post('/scores', async (req, res) => {
 
         const rank = rankResult[0].rank;
 
+        scoresSubmitted.labels(game).inc();
         res.status(201).json({ rank: rank });
 
     } catch (err) {
