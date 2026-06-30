@@ -14,7 +14,7 @@ API de classements multi-jeux pour bornes d'arcade retro (Pac-Man, Tetris, Snake
 
 ## Lancer le projet
 
-### Mode developpement (hot-reload, logs verbeux)
+### Mode developpement
 
 ```bash
 docker compose up --build
