@@ -1,4 +1,4 @@
-DEMANGE Sebastien - HERGOTT Emilien
+DEMANGE Sébastien - HERGOTT Emilien
 
 # Retro Arcade Leaderboard
 
