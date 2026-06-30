@@ -129,10 +129,18 @@ L'impact est directement observable dans le dashboard Grafana et permet de decle
 
 ## Screenshots
 
+### CI GitHub Actions
+
+![CI Pipeline](screenshots/ci.png)
+
 ### Dashboard Grafana sous charge (k6)
 
-![Dashboard Grafana](screenshots/grafana-dashboard.png)
+![Dashboard Grafana 1](screenshots/grafana-dashboard-1.png)
 
-### Alerte Prometheus declenchee (CheatSpike)
+![Dashboard Grafana 2](screenshots/grafana-dashboard-2.png)
 
-![Alerte Prometheus](screenshots/prometheus-alert.png)
+### Alertes Prometheus declenchees
+
+![Alertes Prometheus 1](screenshots/prometheus-alertes-1.png)
+
+![Alertes Prometheus 2](screenshots/prometheus-alertes-2.png)
