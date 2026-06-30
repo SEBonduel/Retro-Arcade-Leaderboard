@@ -54,7 +54,8 @@ CREATE TABLE `scores` (
   `id` bigint UNSIGNED NOT NULL,
   `player_name` varchar(3) NOT NULL,
   `game_id` int DEFAULT NULL,
-  `score` int NOT NULL
+  `score` int NOT NULL,
+  `submitted_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
