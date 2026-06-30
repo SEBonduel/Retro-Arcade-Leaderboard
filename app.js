@@ -184,7 +184,7 @@ app.post('/scores', async (req, res) => {
         );
 
         const [rankResult] = await promise.query(
-            'SELECT COUNT(*) + 1 AS rank FROM scores WHERE game_id = ? AND score > ?',
+            'SELECT COUNT(*) + 1 AS `rank` FROM scores WHERE game_id = ? AND score > ?',
             [gameId, score]
         );
 
