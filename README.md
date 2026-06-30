@@ -1,9 +1,3 @@
----
-noteId: "5df0f2a0747a11f1b22701c2c93434e8"
-tags: []
-
----
-
 # Retro Arcade Leaderboard
 
 API de classements multi-jeux pour bornes d'arcade retro (Pac-Man, Tetris, Snake, Breakout, Donkey Kong).
