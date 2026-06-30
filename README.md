@@ -1,3 +1,5 @@
+DEMANGE Sebastien - HERGGOT Emilien
+
 # Retro Arcade Leaderboard
 
 API de classements multi-jeux pour bornes d'arcade retro (Pac-Man, Tetris, Snake, Breakout, Donkey Kong).
