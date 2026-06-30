@@ -1,0 +1,97 @@
+{
+  "uid": "arcade-leaderboard",
+  "title": "Retro Arcade Leaderboard",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Requetes par seconde",
+      "datasource": "Prometheus",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(http_request_duration_seconds_count[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latence p95 (secondes)",
+      "datasource": "Prometheus",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "fieldConfig": {
+        "defaults": { "unit": "s" },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Taux d'erreur 5xx",
+      "datasource": "Prometheus",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit" },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(http_request_duration_seconds_count{status_code=~\"5..\"}[1m])) / sum(rate(http_request_duration_seconds_count[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Scores soumis par jeu",
+      "datasource": "Prometheus",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(scores_submitted_total[1m])",
+          "legendFormat": "{{game}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Tentatives de triche (scores rejetes)",
+      "datasource": "Prometheus",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(scores_rejected_total[1m])",
+          "legendFormat": "{{game}} - {{reason}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Consultations de classement",
+      "datasource": "Prometheus",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 24 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(leaderboard_views_total[1m])",
+          "legendFormat": "{{game}}"
+        }
+      ]
+    }
+  ]
+}
